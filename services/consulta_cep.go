@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"strings"
@@ -17,22 +18,34 @@ type ConsultaCEPResponse struct {
 		XMLName             xml.Name
 		ConsultaCEPResponse struct {
 			XMLName xml.Name
-			Return  struct {
-				Bairro       string `xml:"bairro" json:"bairro"`
-				Cep          string `xml:"cep" json:"cep"`
-				Cidade       string `xml:"cidade" json:"cidade"`
-				Complemento2 string `xml:"complemento2" json:"complemento2"`
-				End          string `xml:"end" json:"end"`
-				Uf           string `xml:"uf" json:"uf"`
-			} `xml:"return" json:"return"`
+			Return  Cep `xml:"return" json:"return"`
 		} `xml:"consultaCEPResponse" json:"consultaCEPResponse"`
 	}
 }
 
-func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
-	cep, ok := r.URL.Query()["cep"]
+type Cep struct {
+	Bairro       string `xml:"bairro" json:"bairro"`
+	Cep          string `xml:"cep" json:"cep"`
+	Cidade       string `xml:"cidade" json:"cidade"`
+	Complemento2 string `xml:"complemento2" json:"complemento2"`
+	End          string `xml:"end" json:"end"`
+	Uf           string `xml:"uf" json:"uf"`
+}
 
-	if !ok || len(cep[0]) < 1 {
+// ConsultaCEP godoc
+// @Summary Consulta Cep
+// @Description Consulta Cep
+// @Tags cep
+// @Accept json
+// @Produce json
+// @Param cep path string true "CEP"
+// @Success 200 {object} Cep
+// @Router /consultaCEP/{cep} [get]
+func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	cep := params["cep"]
+
+	if len(cep) < 1 {
 		log.Println("Url Param 'cep' is missing")
 		return
 	}
@@ -48,7 +61,7 @@ func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
                <cep>%s</cep>
             </ser:consultaCEP>
          </soapenv:Body>
-      </soapenv:Envelope>`, cep[0]),
+      </soapenv:Envelope>`, cep),
 	))
 
 	httpMethod := "POST"

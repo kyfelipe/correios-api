@@ -1,0 +1,53 @@
+basePath: /
+definitions:
+  services.Cep:
+    properties:
+      bairro:
+        type: string
+      cep:
+        type: string
+      cidade:
+        type: string
+      complemento2:
+        type: string
+      end:
+        type: string
+      uf:
+        type: string
+    type: object
+host: localhost:4000
+info:
+  contact:
+    email: contatos.cortes@gmail.com
+    name: Felipe Côrtes
+    url: http://www.fcortes.com.br/
+  description: TO-DO.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Correios API
+  version: "1.0"
+paths:
+  /consultaCEP/{cep}:
+    get:
+      consumes:
+      - application/json
+      description: Consulta Cep
+      parameters:
+      - description: CEP
+        in: path
+        name: cep
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.Cep'
+      summary: Consulta Cep
+      tags:
+      - cep
+swagger: "2.0"

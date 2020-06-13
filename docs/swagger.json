@@ -1,0 +1,79 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "TO-DO.",
+        "title": "Correios API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Felipe Côrtes",
+            "url": "http://www.fcortes.com.br/",
+            "email": "contatos.cortes@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "paths": {
+        "/consultaCEP/{cep}": {
+            "get": {
+                "description": "Consulta Cep",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cep"
+                ],
+                "summary": "Consulta Cep",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "CEP",
+                        "name": "cep",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/services.Cep"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "services.Cep": {
+            "type": "object",
+            "properties": {
+                "bairro": {
+                    "type": "string"
+                },
+                "cep": {
+                    "type": "string"
+                },
+                "cidade": {
+                    "type": "string"
+                },
+                "complemento2": {
+                    "type": "string"
+                },
+                "end": {
+                    "type": "string"
+                },
+                "uf": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
