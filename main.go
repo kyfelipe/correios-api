@@ -19,8 +19,8 @@ import (
 // @contact.url http://www.fcortes.com.br/
 // @contact.email contatos.cortes@gmail.com
 
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.name MIT License
+// @license.url https://mit-license.org/
 
 // @host localhost:4000
 // @BasePath /

@@ -32,8 +32,8 @@ info:
     url: http://www.fcortes.com.br/
   description: TO-DO.
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: MIT License
+    url: https://mit-license.org/
   termsOfService: http://swagger.io/terms/
   title: Correios API
   version: "1.0"

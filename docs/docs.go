@@ -25,8 +25,8 @@ var doc = `{
             "email": "contatos.cortes@gmail.com"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "MIT License",
+            "url": "https://mit-license.org/"
         },
         "version": "{{.Version}}"
     },
