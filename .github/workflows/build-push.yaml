@@ -8,6 +8,9 @@ on:
 jobs:
   build-push:
     name: Build and Push
+    runs-on:
+      - self-hosted
+      - linux
     steps:
       - uses: docker/build-push-action@v1
         with:
