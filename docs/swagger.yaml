@@ -18,10 +18,8 @@ definitions:
   utils.HTTPError:
     properties:
       code:
-        example: 400
         type: integer
       message:
-        example: status bad request
         type: string
     type: object
 host: localhost:4000
@@ -58,6 +56,10 @@ paths:
             $ref: '#/definitions/services.Cep'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "500":
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/utils.HTTPError'
       summary: Consulta Cep

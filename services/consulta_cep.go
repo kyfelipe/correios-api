@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-type ConsultaCEPResponse struct {
+type CorreiosResponse struct {
 	XMLName xml.Name
 	Body    struct {
 		XMLName             xml.Name
@@ -41,18 +41,15 @@ type Cep struct {
 // @Param cep query string true "CEP"
 // @Success 200 {object} Cep
 // @Failure 400 {object} utils.HTTPError
+// @Failure 500 {object} utils.HTTPError
 // @Router /consultaCEP [get]
 func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	cep := r.URL.Query().Get("cep")
 
 	if len(cep) < 8 {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusBadRequest)
-		_ = json.NewEncoder(w).Encode(utils.HTTPError{
-			Code:    400,
-			Message: "Bad request",
-		})
-		log.Println("Url Param 'cep' is missing")
+		setErrorMessage(&w, http.StatusBadRequest, "Url Param 'cep' is invalid")
 		return
 	}
 
@@ -71,12 +68,13 @@ func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
 	))
 
 	httpMethod := "POST"
-	log.Println("-> Preparing the request")
+	log.Println("Preparing the request")
 
 	// prepare the request
 	req, err := http.NewRequest(httpMethod, url, bytes.NewBuffer(payload))
 	if err != nil {
-		log.Fatal("Error on creating request object. ", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		setErrorMessage(&w, http.StatusInternalServerError, fmt.Sprintf("Error on creating request object. %s", err.Error()))
 		return
 	}
 
@@ -92,34 +90,40 @@ func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	}
-	log.Println("-> Dispatching the request")
+	log.Println("Dispatching the request")
 
 	// dispatch the request
 	res, err := client.Do(req)
 	if err != nil {
-		log.Fatal("Error on dispatching request. ", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		setErrorMessage(&w, http.StatusInternalServerError, fmt.Sprintf("Error on dispatching request. %s", err.Error()))
 		return
 	}
 	defer res.Body.Close()
 
-	log.Println("-> Retrieving and parsing the response")
+	log.Println("Retrieving and parsing the response")
 
 	// read and parse the response body
-	result := &ConsultaCEPResponse{}
+	result := &CorreiosResponse{}
 	err = xml.NewDecoder(res.Body).Decode(result)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	data := &ConsultaCEPResponse{}
+	data := &CorreiosResponse{}
 	b, _ := xml.Marshal(result)
 	_ = xml.Unmarshal(b, data)
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(data.Body.ConsultaCEPResponse.Return)
-	//j, _ := json.Marshal(data.Body.ConsultaCEPResponse.Return)
-	//w.Write(j)
 
-	log.Println("-> Everything is good, printing users data")
+	log.Println("Everything is good, response cep data")
+}
+
+func setErrorMessage(w *http.ResponseWriter, statusCode int, message string) {
+	_ = json.NewEncoder(*w).Encode(utils.HTTPError{
+		Code:    statusCode,
+		Message: message,
+	})
+	log.Println(message)
 }

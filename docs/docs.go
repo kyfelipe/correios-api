@@ -67,6 +67,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/utils.HTTPError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
                     }
                 }
             }
@@ -100,12 +106,10 @@ var doc = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "integer",
-                    "example": 400
+                    "type": "integer"
                 },
                 "message": {
-                    "type": "string",
-                    "example": "status bad request"
+                    "type": "string"
                 }
             }
         }
