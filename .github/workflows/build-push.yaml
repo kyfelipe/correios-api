@@ -2,8 +2,8 @@
 name: Build and push image
 
 on:
-  push:
-    tags:
+  release:
+    types: [created]
 
 jobs:
   build-push:
