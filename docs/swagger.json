@@ -18,7 +18,7 @@
     "host": "localhost:4000",
     "basePath": "/",
     "paths": {
-        "/consultaCEP/{cep}": {
+        "/consultaCEP": {
             "get": {
                 "description": "Consulta Cep",
                 "consumes": [
@@ -36,7 +36,7 @@
                         "type": "string",
                         "description": "CEP",
                         "name": "cep",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -45,6 +45,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.Cep"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
                         }
                     }
                 }
@@ -72,6 +78,19 @@
                 },
                 "uf": {
                     "type": "string"
+                }
+            }
+        },
+        "utils.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
                 }
             }
         }

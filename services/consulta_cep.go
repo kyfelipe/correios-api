@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/gorilla/mux"
+	"github.com/kyfelipe/correios-api/utils"
 	"log"
 	"net/http"
 	"strings"
@@ -38,14 +38,20 @@ type Cep struct {
 // @Tags cep
 // @Accept json
 // @Produce json
-// @Param cep path string true "CEP"
+// @Param cep query string true "CEP"
 // @Success 200 {object} Cep
-// @Router /consultaCEP/{cep} [get]
+// @Failure 400 {object} utils.HTTPError
+// @Router /consultaCEP [get]
 func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	cep := params["cep"]
+	cep := r.URL.Query().Get("cep")
 
-	if len(cep) < 1 {
+	if len(cep) < 8 {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(utils.HTTPError{
+			Code:    400,
+			Message: "Bad request",
+		})
 		log.Println("Url Param 'cep' is missing")
 		return
 	}
@@ -108,9 +114,12 @@ func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
 	data := &ConsultaCEPResponse{}
 	b, _ := xml.Marshal(result)
 	_ = xml.Unmarshal(b, data)
-	j, _ := json.Marshal(data.Body.ConsultaCEPResponse.Return)
+
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(j)
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(data.Body.ConsultaCEPResponse.Return)
+	//j, _ := json.Marshal(data.Body.ConsultaCEPResponse.Return)
+	//w.Write(j)
 
 	log.Println("-> Everything is good, printing users data")
 }

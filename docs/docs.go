@@ -33,7 +33,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/consultaCEP/{cep}": {
+        "/consultaCEP": {
             "get": {
                 "description": "Consulta Cep",
                 "consumes": [
@@ -51,7 +51,7 @@ var doc = `{
                         "type": "string",
                         "description": "CEP",
                         "name": "cep",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -60,6 +60,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/services.Cep"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
                         }
                     }
                 }
@@ -87,6 +93,19 @@ var doc = `{
                 },
                 "uf": {
                     "type": "string"
+                }
+            }
+        },
+        "utils.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
                 }
             }
         }

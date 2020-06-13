@@ -29,7 +29,7 @@ import (
 func main() {
 	router := mux.NewRouter()
 	// Consulta cep
-	router.HandleFunc("/consultaCEP/{cep}", services.ConsultaCEP).Methods("GET")
+	router.HandleFunc("/consultaCEP", services.ConsultaCEP).Methods("GET")
 
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	log.Fatal(http.ListenAndServe(":4000", router))

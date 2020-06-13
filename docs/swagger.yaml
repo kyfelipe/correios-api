@@ -15,6 +15,15 @@ definitions:
       uf:
         type: string
     type: object
+  utils.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
 host: localhost:4000
 info:
   contact:
@@ -29,14 +38,14 @@ info:
   title: Correios API
   version: "1.0"
 paths:
-  /consultaCEP/{cep}:
+  /consultaCEP:
     get:
       consumes:
       - application/json
       description: Consulta Cep
       parameters:
       - description: CEP
-        in: path
+        in: query
         name: cep
         required: true
         type: string
@@ -47,6 +56,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/services.Cep'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
       summary: Consulta Cep
       tags:
       - cep
