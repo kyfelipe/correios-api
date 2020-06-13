@@ -1,12 +1,14 @@
 # Correios API
 
-Run:
+Uma API para consulta de CEPs.
+
+Execute:
 
 ```shell script
 docker run -p 4000:4000 --name correios-api kyfelipe/correios-api:latest
 ```
 
-Swagger:
+URL do Swagger:
 ```
 localhost:4000/swagger/index.html
 ```
