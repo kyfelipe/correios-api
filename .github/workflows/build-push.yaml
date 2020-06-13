@@ -1,5 +1,5 @@
 # https://help.github.com/pt/actions/reference/workflow-syntax-for-github-actions
-name: Build and Push image
+name: Build and push image
 
 on:
   push:
@@ -9,8 +9,7 @@ jobs:
   build-push:
     name: Build and Push
     runs-on:
-      - self-hosted
-      - linux
+      - ubuntu-latest
     steps:
       - uses: docker/build-push-action@v1
         with:
