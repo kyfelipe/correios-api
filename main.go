@@ -32,5 +32,6 @@ func main() {
 	router.HandleFunc("/consultaCEP", services.ConsultaCEP).Methods("GET")
 
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
+	log.Println("Correios API started")
 	log.Fatal(http.ListenAndServe(":4000", router))
 }

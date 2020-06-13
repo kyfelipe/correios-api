@@ -68,7 +68,7 @@ func ConsultaCEP(w http.ResponseWriter, r *http.Request) {
 	))
 
 	httpMethod := "POST"
-	log.Println("Preparing the request")
+	log.Println(fmt.Sprintf("Preparing the request for the cep: %s", cep))
 
 	// prepare the request
 	req, err := http.NewRequest(httpMethod, url, bytes.NewBuffer(payload))
